@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IronPulse Fitness Club - Gym Membership</title>
+
+  <style>
+    /* ===== THEME: GYM (charcoal + neon lime) ===== */
+    :root {
+      --black: #0e0f10;
+      --char: #1a1c1e;
+      --steel: #2a2d30;
+      --lime: #c6f432;
+      --lime-dark: #9fc41c;
+      --white: #f4f5f2;
+      --grey: #9ba0a4;
+      --red: #ff4d3d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: "Arial Narrow", "Segoe UI", Arial, sans-serif; background: var(--black); color: var(--white); line-height: 1.55; }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+      padding: 16px 6%; background: var(--black); border-bottom: 1px solid var(--steel);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { font-family: Impact, "Arial Black", sans-serif; font-size: 1.7rem; letter-spacing: 2px; text-transform: uppercase; }
+    .logo span { color: var(--lime); }
+    .nav a { color: var(--white); text-decoration: none; margin-left: 22px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+    .nav a:hover { color: var(--lime); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      padding: 90px 6% 70px; position: relative; overflow: hidden;
+      background: linear-gradient(110deg, var(--black) 45%, #1d2410);
+    }
+    /* diagonal stripes */
+    .hero::after {
+      content: ""; position: absolute; top: 0; right: -80px; width: 340px; height: 100%;
+      background: repeating-linear-gradient(115deg, var(--lime) 0 14px, transparent 14px 44px); opacity: 0.18;
+    }
+    .hero small { color: var(--lime); letter-spacing: 4px; text-transform: uppercase; font-weight: 700; }
+    .hero h1 { font-family: Impact, "Arial Black", sans-serif; font-size: 4.4rem; line-height: 1; text-transform: uppercase; margin: 12px 0 18px; position: relative; z-index: 1; }
+    .hero h1 em { color: var(--lime); font-style: normal; }
+    .hero p { max-width: 480px; color: var(--grey); margin-bottom: 28px; position: relative; z-index: 1; }
+    .btn {
+      display: inline-block; background: var(--lime); color: var(--black); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      padding: 14px 34px; text-decoration: none; border: none; font-size: 1rem; cursor: pointer; position: relative; z-index: 1;
+      clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+    }
+    .btn:hover { background: var(--white); }
+
+    /* ---------- Stats ---------- */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); background: var(--lime); color: var(--black); }
+    .stat { padding: 22px; text-align: center; border-right: 1px solid rgba(0,0,0,0.15); }
+    .stat b { display: block; font-family: Impact, sans-serif; font-size: 2.2rem; }
+
+    section { padding: 56px 6%; }
+    h2 { font-family: Impact, "Arial Black", sans-serif; font-size: 2.3rem; text-transform: uppercase; margin-bottom: 8px; }
+    h2 span { color: var(--lime); }
+    .sub { color: var(--grey); margin-bottom: 28px; }
+
+    /* ---------- Programs ---------- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .card { background: var(--char); border: 1px solid var(--steel); border-bottom: 4px solid var(--lime); padding: 24px; }
+    .card:hover { background: var(--steel); }
+    .card .ico { font-family: Impact, sans-serif; font-size: 2.4rem; color: var(--lime); }
+    .card h3 { text-transform: uppercase; margin: 6px 0; }
+    .card p { color: var(--grey); font-size: 0.95rem; }
+
+    /* ---------- Pricing with CSS-only toggle ---------- */
+    .pricing { background: var(--char); }
+    .toggle > input { position: absolute; opacity: 0; pointer-events: none; }
+    .switch { display: inline-flex; border: 2px solid var(--lime); margin-bottom: 28px; }
+    .switch label { padding: 9px 26px; cursor: pointer; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+    #bill-m:checked ~ .switch label[for=bill-m],
+    #bill-y:checked ~ .switch label[for=bill-y] { background: var(--lime); color: var(--black); }
+    .y { display: none; }
+    #bill-y:checked ~ .plans .m { display: none; }
+    #bill-y:checked ~ .plans .y { display: inline; }
+
+    .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+    .plan { background: var(--black); border: 2px solid var(--steel); padding: 28px; position: relative; }
+    .plan.hot { border-color: var(--lime); }
+    .plan .flag { position: absolute; top: -13px; right: 18px; background: var(--lime); color: var(--black); font-size: 0.75rem; font-weight: 700; padding: 3px 12px; text-transform: uppercase; }
+    .plan h3 { text-transform: uppercase; letter-spacing: 2px; color: var(--grey); }
+    .amount { font-family: Impact, sans-serif; font-size: 3rem; color: var(--lime); margin: 8px 0; }
+    .amount small { font-family: Arial, sans-serif; font-size: 0.9rem; color: var(--grey); }
+    .plan ul { list-style: none; margin: 14px 0 20px; }
+    .plan li { padding: 6px 0; border-bottom: 1px solid var(--steel); color: #d4d7d9; }
+    .plan li::before { content: "+ "; color: var(--lime); font-weight: 700; }
+    .plan li.no { color: #5f6468; text-decoration: line-through; }
+    .plan li.no::before { content: "- "; color: var(--red); }
+
+    /* ---------- Class schedule ---------- */
+    .tablebox { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    th, td { padding: 13px; border: 1px solid var(--steel); text-align: center; }
+    th { background: var(--lime); color: var(--black); text-transform: uppercase; letter-spacing: 1px; }
+    td:first-child { background: var(--char); font-weight: 700; color: var(--lime); }
+    td.hiit { background: #2d1512; color: #ff8d80; }
+    td.yoga { background: #122a1c; color: #7fe0a6; }
+    td.str  { background: #1c2230; color: #8fb4ff; }
+    td.zumba{ background: #2e2610; color: #ffd36b; }
+
+    /* ---------- Trainers ---------- */
+    .trainer .avatar {
+      width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--lime), #4a6b00);
+      color: var(--black); font-family: Impact, sans-serif; font-size: 2rem; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+    }
+
+    /* ---------- Join form ---------- */
+    .join { background: linear-gradient(110deg, var(--char), #1d2410); }
+    form { max-width: 700px; background: var(--black); border: 1px solid var(--steel); padding: 28px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .row > div { flex: 1 1 220px; }
+    label.l { display: block; margin: 12px 0 4px; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 1px; color: var(--lime); }
+    input[type=text], input[type=email], input[type=tel], input[type=number], select, textarea {
+      width: 100%; padding: 11px; background: var(--char); border: 1px solid #3c4044; color: var(--white); font: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--lime); }
+    .opts label { margin-right: 16px; }
+    form .btn { margin-top: 22px; }
+
+    footer { background: var(--black); border-top: 1px solid var(--steel); text-align: center; padding: 22px; color: var(--grey); font-size: 0.9rem; }
+
+    @media (max-width: 700px) { .hero h1 { font-size: 2.8rem; } .nav a { margin: 0 14px 0 0; } }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="logo">Iron<span>Pulse</span></div>
+    <div>
+      <a href="#programs">Programs</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#schedule">Classes</a>
+      <a href="#trainers">Trainers</a>
+      <a href="#join">Join</a>
+    </div>
+  </div>
+
+  <header class="hero">
+    <small>Fitness Club | Open 5 AM - 11 PM</small>
+    <h1>Train hard.<br><em>Live strong.</em></h1>
+    <p>Modern equipment, certified trainers and classes for every level. Your first week is on us.</p>
+    <a href="#join" class="btn">Start free trial</a>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>5000+</b>Members</div>
+    <div class="stat"><b>30</b>Expert trainers</div>
+    <div class="stat"><b>60+</b>Weekly classes</div>
+    <div class="stat"><b>24x7</b>Support</div>
+  </div>
+
+  <section id="programs">
+    <h2>Our <span>programs</span></h2>
+    <p class="sub">Pick the goal. We build the plan.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">01</div><h3>Weight Loss</h3><p>Cardio, HIIT and diet guidance to burn fat safely.</p></div>
+      <div class="card"><div class="ico">02</div><h3>Muscle Gain</h3><p>Progressive strength training with a personal split.</p></div>
+      <div class="card"><div class="ico">03</div><h3>Yoga and Flexibility</h3><p>Improve posture, mobility and stress levels.</p></div>
+      <div class="card"><div class="ico">04</div><h3>Personal Training</h3><p>One-to-one coaching and progress tracking.</p></div>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing">
+    <h2>Membership <span>plans</span></h2>
+    <p class="sub">Choose billing and save more with yearly plans.</p>
+
+    <div class="toggle">
+      <input type="radio" name="bill" id="bill-m" checked>
+      <input type="radio" name="bill" id="bill-y">
+      <div class="switch">
+        <label for="bill-m">Monthly</label>
+        <label for="bill-y">Yearly</label>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <h3>Basic</h3>
+          <div class="amount"><span class="m">Rs. 999</span><span class="y">Rs. 9,500</span> <small><span class="m">/ month</span><span class="y">/ year</span></small></div>
+          <ul><li>Gym floor access</li><li>Locker room</li><li>Free fitness test</li><li class="no">Group classes</li><li class="no">Personal trainer</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+        <div class="plan hot">
+          <span class="flag">Most popular</span>
+          <h3>Pro</h3>
+          <div class="amount"><span class="m">Rs. 1,799</span><span class="y">Rs. 17,000</span> <small><span class="m">/ month</span><span class="y">/ year</span></small></div>
+          <ul><li>Gym floor access</li><li>All group classes</li><li>Diet chart</li><li>Steam and sauna</li><li class="no">Personal trainer</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+        <div class="plan">
+          <h3>Elite</h3>
+          <div class="amount"><span class="m">Rs. 3,299</span><span class="y">Rs. 31,000</span> <small><span class="m">/ month</span><span class="y">/ year</span></small></div>
+          <ul><li>Everything in Pro</li><li>Personal trainer</li><li>Monthly body scan</li><li>Guest passes</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <h2>Class <span>schedule</span></h2>
+    <p class="sub">Book your slot at the front desk.</p>
+    <div class="tablebox">
+      <table>
+        <tr><th>Time</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+        <tr><td>6:00 AM</td><td class="yoga">Yoga</td><td class="hiit">HIIT</td><td class="yoga">Yoga</td><td class="hiit">HIIT</td><td class="yoga">Yoga</td><td class="str">Strength</td></tr>
+        <tr><td>8:00 AM</td><td class="str">Strength</td><td class="zumba">Zumba</td><td class="str">Strength</td><td class="zumba">Zumba</td><td class="str">Strength</td><td class="hiit">HIIT</td></tr>
+        <tr><td>6:00 PM</td><td class="hiit">HIIT</td><td class="str">Strength</td><td class="zumba">Zumba</td><td class="yoga">Yoga</td><td class="hiit">HIIT</td><td class="zumba">Zumba</td></tr>
+        <tr><td>7:30 PM</td><td class="zumba">Zumba</td><td class="yoga">Yoga</td><td class="hiit">HIIT</td><td class="str">Strength</td><td class="zumba">Zumba</td><td>Closed</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="trainers" style="background: var(--char)">
+    <h2>Meet the <span>trainers</span></h2>
+    <p class="sub">Certified coaches who push you further.</p>
+    <div class="grid">
+      <div class="card trainer"><div class="avatar">RK</div><h3>Rahul K.</h3><p>Strength and conditioning. 8 years of experience.</p></div>
+      <div class="card trainer"><div class="avatar">SP</div><h3>Sneha P.</h3><p>Yoga and mobility specialist. Certified instructor.</p></div>
+      <div class="card trainer"><div class="avatar">AM</div><h3>Arjun M.</h3><p>HIIT and fat-loss coach. Former state athlete.</p></div>
+    </div>
+  </section>
+
+  <section id="join" class="join">
+    <h2>Join <span>today</span></h2>
+    <p class="sub">Fill the form and get a free 7-day trial pass.</p>
+    <form action="#" method="post">
+      <div class="row">
+        <div><label class="l" for="name">Full name</label><input type="text" id="name" required></div>
+        <div><label class="l" for="phone">Phone</label><input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10 digits" required></div>
+      </div>
+      <div class="row">
+        <div><label class="l" for="email">Email</label><input type="email" id="email" required></div>
+        <div><label class="l" for="age">Age</label><input type="number" id="age" min="14" max="80"></div>
+      </div>
+      <div class="row">
+        <div><label class="l" for="height">Height (cm)</label><input type="number" id="height" min="100" max="230"></div>
+        <div><label class="l" for="weight">Weight (kg)</label><input type="number" id="weight" min="30" max="200"></div>
+      </div>
+
+      <label class="l" for="goal">Fitness goal</label>
+      <select id="goal"><option>Weight loss</option><option>Muscle gain</option><option>Flexibility</option><option>General fitness</option></select>
+
+      <label class="l">Plan</label>
+      <div class="opts">
+        <label><input type="radio" name="plan"> Basic</label>
+        <label><input type="radio" name="plan" checked> Pro</label>
+        <label><input type="radio" name="plan"> Elite</label>
+      </div>
+
+      <label class="l" for="med">Medical conditions (if any)</label>
+      <textarea id="med" rows="3"></textarea>
+
+      <button type="submit" class="btn">Claim free trial</button>
+    </form>
+  </section>
+
+  <footer>&copy; 2026 IronPulse Fitness Club | Gym Assignment</footer>
+</body>
+</html>
